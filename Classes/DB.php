@@ -7,7 +7,7 @@ use PDOException;
 
 class DB
 {
-    public $pdo;
+    public PDO $pdo;
 
     public function __construct() {
 
@@ -31,7 +31,7 @@ class DB
         }
     }
 
-    public function migrate()
+    public function migrate(): void
     {
         $sqlDirectory = $_SERVER['DOCUMENT_ROOT'] . '/migration/create_orders_table.sql';
 

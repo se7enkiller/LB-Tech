@@ -4,10 +4,11 @@ namespace Classes;
 
 use Enum\StatusType;
 use Exception;
+use PDO;
 
 class Order
 {
-    public $pdo;
+    public PDO $pdo;
 
     public function __construct()
     {
@@ -18,7 +19,7 @@ class Order
 
     public function parse(): array
     {
-        $url = 'https://nutrend-crm.voiptime.app/api/v2/admin/order/list?status_id=eq:12';
+        $url = 'https://nutrend-crm.voiptime.app/api/v2/admin/order/list';
         $token = 'JS4KBYs';
         $curl = new Curl();
         $orders = $curl($url, $token);
@@ -39,10 +40,11 @@ class Order
             }
         }
 
+        echo 'Orders created: ' . count($result) . PHP_EOL;
         return $result;
     }
 
-    public function browse()
+    public function browse(): false|array
     {
         $query = 'SELECT * FROM orders 
          WHERE status_id != ' . StatusType::CANCELLED . ' 
@@ -51,7 +53,7 @@ class Order
         return $this->pdo->query($query)->fetchAll();
     }
 
-    public function create($orderData)
+    public function create($orderData): void
     {
         $sql = 'INSERT INTO orders (reference, tracker_id) VALUES (:reference, :tracker_id)';
 
@@ -59,7 +61,7 @@ class Order
         $stmt->execute([':reference' => $orderData['reference'], ':tracker_id' => $orderData['tracker_id']]);
     }
 
-    public function update($orderData)
+    public function update($orderData): void
     {
         $sql = 'UPDATE orders SET status_id = :status_id, tracker_id = :tracker_id WHERE reference = :reference';
         $stmt = $this->pdo->prepare($sql);
@@ -78,11 +80,12 @@ class Order
                 'total_currency' => 'EUR'
             ];
             foreach ($order['cart'] as $item) {
-                $cart['total_local_currency'] += $item['selling_price'] * $item['quantity'];
+                $price = $item['selling_price'] * 100 * $item['quantity'];
+                $cart['total_local_currency'] += $price;
                 $cart['products'][] = [
-                    'id' => $this->getProductId($item['id']),
+                    'id' => $this->getProductId($item['good_id']),
                     'quantity' => $item['quantity'],
-                    'cost_local_currency' => $item['selling_price'] * $item['quantity'],
+                    'cost_local_currency' => $price,
                 ];
             }
         }
@@ -106,20 +109,15 @@ class Order
 
     private function getProductId($cartId): string
     {
-        switch ($cartId) {
-            case 1:
-                return '5f3264e5-b54e-4dd1-85f5-2f41ffb6647e';
-            case 2:
-                return '6a7d5d1c-f346-40f3-8b97-dd888b8b8fc8';
-            case 4:
-            case 3:
-                return '6fab99b8-1f26-40f8-ab76-59af031cee46';
-            default:
-                return '0';
-        }
+        return match ((string) $cartId) {
+            '1' => '5f3264e5-b54e-4dd1-85f5-2f41ffb6647e',
+            '2' => '6a7d5d1c-f346-40f3-8b97-dd888b8b8fc8',
+            '4', '3' => '6fab99b8-1f26-40f8-ab76-59af031cee46',
+            default => (string) $cartId,
+        };
     }
 
-    public function updateStatus($orderData, $statusId)
+    public function updateStatus($orderData, $statusId): void
     {
         $url = 'https://nutrend-crm.voiptime.app/api/v2/admin/order';
         $token = 'JS4KBYs';
