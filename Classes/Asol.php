@@ -37,7 +37,7 @@ class Asol
         return $result['id'];
     }
 
-    public function getStatus($trackerId)
+    public function getOrderInfo($trackerId)
     {
         $url = 'https://service.asol.pro/api/v1/order/' . $trackerId . '/status';
         $token = 'Basic Zml0ZW5zaWFwcC53ZWJzaXRlOlRoR3NTZjhoRUU4eDgkMTUxbTVL';
@@ -49,6 +49,6 @@ class Asol
             return false;
         }
 
-        return $result['status'];
+        return $result;
     }
 }

@@ -19,9 +19,14 @@ class Curl
             CURLOPT_POSTFIELDS => json_encode($data),
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/json',
-                'Authorization: ' . $token
+                'Authorization: ' . $token,
+                'token: ' . $token,
             ),
         ));
+
+        if (curl_errno($curl)) {
+            echo 'cURL error: ' . curl_error($curl);
+        }
 
         $response = curl_exec($curl);
         curl_close($curl);
