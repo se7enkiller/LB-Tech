@@ -22,13 +22,16 @@ class Curl
                 'Authorization: ' . $token,
                 'token: ' . $token,
             ),
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
         ));
+
+        $response = curl_exec($curl);
 
         if (curl_errno($curl)) {
             echo 'cURL error: ' . curl_error($curl);
         }
 
-        $response = curl_exec($curl);
         curl_close($curl);
 
         return json_decode($response, true);

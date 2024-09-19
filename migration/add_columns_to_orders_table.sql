@@ -1,0 +1,3 @@
+ALTER TABLE orders
+    ADD COLUMN track VARCHAR(255) DEFAULT NULL AFTER tracker_id
+    ADD COLUMN service VARCHAR(255) DEFAULT 'Asol' AFTER track;

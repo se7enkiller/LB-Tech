@@ -26,8 +26,7 @@ class WapiOrder
 
         foreach ($filteredOrders as $orderData) {
             $tracker = $this->wapi->getTrackerData($orderData);
-            var_dump($tracker);
-            die();
+
             if ($tracker === false) {
                 continue;
             }
@@ -40,10 +39,9 @@ class WapiOrder
 
     private function updateOrder(): void
     {
-        foreach ($this->order->browse() as $orderData) {
+        foreach ($this->order->browse('Wapi') as $orderData) {
             $orderInfo = $this->wapi->getOrderInfo($orderData);
-            var_dump($orderInfo);
-            die();
+
             $statusId = StatusType::getId($orderInfo['status']);
 
             $this->order->update([

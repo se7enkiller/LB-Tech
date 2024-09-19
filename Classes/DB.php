@@ -2,6 +2,7 @@
 
 namespace Classes;
 
+use Exception;
 use PDO;
 use PDOException;
 
@@ -33,16 +34,20 @@ class DB
 
     public function migrate(): void
     {
-        $sqlDirectory = $_SERVER['DOCUMENT_ROOT'] . '/migration/create_orders_table.sql';
+        $sqlDirectory = $_SERVER['DOCUMENT_ROOT'] . '/migration';
 
         $files = glob($sqlDirectory . '/*.sql');
 
         foreach ($files as $file) {
-            $sql = file_get_contents($file);
+            try {
+                $sql = file_get_contents($file);
 
-            $this->pdo->exec($sql);
+                $this->pdo->exec($sql);
 
-            echo "Executed: $file\n";
+                echo "Executed: $file\n";
+            } catch (Exception $e) {
+                echo $e->getMessage();
+            }
         }
 
         echo "All SQL scripts executed successfully.";

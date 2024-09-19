@@ -33,7 +33,8 @@ class Order
 
         foreach ($filteredOrders as $order) {
             try {
-//                $this->create($order);
+                var_dump($order);
+                $this->create($order);
                 $result[] = $order;
             } catch (Exception $e) {
                 continue;
@@ -44,12 +45,13 @@ class Order
         return $result;
     }
 
-    public function browse(): false|array
+    public function browse($service = 'Asol'): false|array
     {
         $query = 'SELECT * FROM orders 
-         WHERE status_id != ' . StatusType::CANCELLED->value . ' 
+         WHERE service = "' . $service . '" 
+         AND (status_id != ' . StatusType::CANCELLED->value . ' 
          OR status_id != ' . StatusType::RETURNED->value . '
-         OR status_id != ' . StatusType::PAID_OUT->value;
+         OR status_id != ' . StatusType::PAID_OUT->value . ')';
 
         return $this->pdo->query($query)->fetchAll();
     }
@@ -64,13 +66,13 @@ class Order
 
     public function update($orderData): void
     {
-        $sql = 'UPDATE orders SET status_id = :status_id, tracker_id = :tracker_id, uuid = :uuid  WHERE reference = :reference';
+        $sql = 'UPDATE orders SET status_id = :status_id, tracker_id = :tracker_id, track = :track  WHERE reference = :reference';
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
             ':status_id' => $orderData['status_id'] ?: 12,
             ':reference' => $orderData['reference'],
             ':tracker_id' => $orderData['tracker_id'],
-            ':uuid' => !empty($orderData['uuid']) ? $orderData['uuid'] : '',
+            ':track' => !empty($orderData['track']) ? $orderData['track'] : '',
         ]);
     }
 

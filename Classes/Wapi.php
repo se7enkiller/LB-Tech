@@ -51,8 +51,6 @@ class Wapi
         ];
 
         $result = $curl($url, $this->token, 'POST', $data);
-        var_dump('$result');
-        var_dump($result);
 
         if (empty($result['success'])) {
             echo $result['errorMessage'];
