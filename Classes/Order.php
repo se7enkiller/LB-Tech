@@ -33,7 +33,6 @@ class Order
 
         foreach ($filteredOrders as $order) {
             try {
-                var_dump($order);
                 $this->create($order);
                 $result[] = $order;
             } catch (Exception $e) {

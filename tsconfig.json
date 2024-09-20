@@ -1,0 +1,41 @@
+{
+  "cart": [
+    {
+      "order_id": 832,
+      "selling_price": 39.0,
+      "additional_sale": false,
+      "purchase_price": 0,
+      "good": {"string6": null, "sets": [], "units_id": 1, "boolean3": false, "weight": 100, "image": null, "integer3": null, "string10": null, "id": 4,
+        "length": 0, "string4": null, "source_uuid": null, "variant_attribute_info": null, "external_id": null, "datetime1": null, "string8": null,
+        "voiptime_tm": 0, "integer4": null, "boolean2": false, "description": null, "boolean1": false, "integer2": null, "parent_id": null,
+        "name": "Black Macca Potenza", "string1": null, "shop_id": null, "additional_prices": [], "external_notes": null, "string9": null,
+        "items_count": -91, "integer5": null, "country": null, "string7": null, "date2": null, "datetime4": null, "is_additional_sale": true,
+        "string5": null, "source_id": 0, "purchase_price": 0,
+        "amount": [{"warehouse_id": 1, "amount": -91, "min_amount": 0, "id": 4, "is_notified": false, "good_id": 4, "reserved": 91}],
+        "updated_date": "2024-08-20 06:24:41", "tags": null, "vendor": null, "height": 0, "scenario_id": 0, "marketplace_id": null, "models": null, "integer1": null,
+        "barcode": null, "width": 0, "datetime3": null, "date1": null, "discount_perc": 0, "selling_price": 0, "datetime2": null, "string2": null, "category_id": null,
+        "additional_sales": [], "date3": null, "slug": null, "datetime5": null, "reserved_count": 91, "internal_notes": null, "images": null, "string3": null,
+        "created_date": "2024-08-20 06:24:37", "deleted": false
+      },
+      "id": 15, "good_id": 4, "quantity": 67, "discount": 0
+    },
+    {
+      "order_id": 832, "selling_price": 39.0, "additional_sale": false, "purchase_price": 0,
+      "good": {"string6": null, "sets": [], "units_id": 1, "boolean3": false, "weight": 100, "image": null, "integer3": null, "string10": null,
+        "id": 3, "length": 0, "string4": null, "source_uuid": null, "variant_attribute_info": null, "external_id": null, "datetime1": null,
+        "string8": null, "voiptime_tm": 0, "integer4": null, "boolean2": false, "description": null, "boolean1": false, "integer2": null,
+        "parent_id": null, "name": "Black Macca Prostatit", "string1": null, "shop_id": null, "additional_prices": [], "external_notes": null,
+        "string9": null, "items_count": -1, "integer5": null, "country": null, "string7": null, "date2": null, "datetime4": null,
+        "is_additional_sale": true, "string5": null, "source_id": 0, "purchase_price": 0,
+        "amount": [{"warehouse_id": 1, "amount": -1, "min_amount": 0, "id": 3, "is_notified": false, "good_id": 3, "reserved": 13}],
+        "updated_date": "2024-08-20 06:24:19", "tags": null, "vendor": null, "height": 0, "scenario_id": 0, "marketplace_id": null,
+        "models": null, "integer1": null, "barcode": null, "width": 0, "datetime3": null, "date1": null, "discount_perc": 0,
+        "selling_price": 0, "datetime2": null, "string2": null, "category_id": null, "additional_sales": [], "date3": null, "slug": null,
+        "datetime5": null, "reserved_count": 13, "internal_notes": null, "images": null, "string3": null, "created_date": "2024-08-20 06:24:11",
+        "deleted": false
+      },
+      "id": 16, "good_id": 3, "quantity": 13, "discount": 0}
+  ], "webmaster_id": 1, "canceled_date": null,
+  "tac_has_recall": null, "integer9": null, "accepted_date": "2024-08-24T08:31:54", "string11": null, "id": 832, "external_id": null,
+  "string8": null, "webmaster_paid": 0, "buyout_date": null, "comment": "6 conf.156 euro black maca potenza\nper coriere avvisare cliente un giorno prima\n_________________\n70anni \nerezione debole\ndesiderio ce\nvita sesuale no frequente\nprovato viagra\n", "integer5": null, "string7": "1", "utm_campaign": null, "tac_status": null, "lead_id": 500, "datetime3": null, "string15": null, "status_id": 5, "deleted": false, "payment_status": null, "delivery_id": 76, "string12": null, "created_date": "2024-08-24T07:41:03", "tac_called_count": null, "last_changed_user_id": 1, "warehouse_id": 1
+}

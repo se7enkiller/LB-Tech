@@ -41,7 +41,6 @@ class DB
         foreach ($files as $file) {
             try {
                 $sql = file_get_contents($file);
-
                 $this->pdo->exec($sql);
 
                 echo "Executed: $file\n";
