@@ -1,6 +1,6 @@
 <?php
 
-namespace Cron;
+namespace cron;
 
 use Classes\Asol;
 use Classes\Order;

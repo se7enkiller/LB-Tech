@@ -21,9 +21,7 @@ class Curl
                 'Content-Type: application/json',
                 'Authorization: ' . $token,
                 'token: ' . $token,
-            ),
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_SSL_VERIFYHOST => false,
+            )
         ));
 
         $response = curl_exec($curl);

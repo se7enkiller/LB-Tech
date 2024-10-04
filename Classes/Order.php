@@ -15,7 +15,7 @@ class Order
         $db = new DB();
 
         $this->pdo = $db->pdo;
-    }
+    } 
 
     public function parse($statusId = 12): array
     {
@@ -33,7 +33,8 @@ class Order
 
         foreach ($filteredOrders as $order) {
             try {
-                $this->create($order);
+                $service = $statusId === 12 ? 'Asol' : 'Wapi';
+                $this->create($order, $service);
                 $result[] = $order;
             } catch (Exception $e) {
                 continue;
@@ -55,23 +56,33 @@ class Order
         return $this->pdo->query($query)->fetchAll();
     }
 
-    public function create($orderData): void
+    public function create($orderData, $service = 'Asol'): void
     {
-        $sql = 'INSERT INTO orders (reference, tracker_id) VALUES (:reference, :tracker_id)';
+        $sql = 'INSERT INTO orders (reference, tracker_id, service) VALUES (:reference, :tracker_id, :service)';
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':reference' => $orderData['reference'], ':tracker_id' => $orderData['tracker_id']]);
+        $stmt->execute([
+            ':reference' => $orderData['reference'],
+            ':tracker_id' => $orderData['tracker_id'],
+            ':service' => $service
+        ]);
     }
 
     public function update($orderData): void
     {
-        $sql = 'UPDATE orders SET status_id = :status_id, tracker_id = :tracker_id, track = :track  WHERE reference = :reference';
+        $sql = 'UPDATE orders SET 
+                  status_id = :status_id, 
+                  tracker_id = :tracker_id, 
+                  track = :track,
+                  service = :service
+              WHERE reference = :reference';
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
             ':status_id' => $orderData['status_id'] ?: 12,
             ':reference' => $orderData['reference'],
             ':tracker_id' => $orderData['tracker_id'],
             ':track' => !empty($orderData['track']) ? $orderData['track'] : '',
+            ':service' => $orderData['service']
         ]);
     }
 
@@ -81,13 +92,13 @@ class Order
         if ($order['cart']) {
             $cart = [
                 'total_currency' => 'EUR',
-                'total_local_currency' => $order['price'] * 100
+                'total_local_currency' => $order['price'] / count($order['cart'])
             ];
             foreach ($order['cart'] as $item) {
                 $cart['products'][] = [
                     'id' => $this->getProductId($item['good_id']),
                     'quantity' => $item['quantity'],
-                    'cost_local_currency' => $order['price'] * 100,
+                    'cost_local_currency' => $order['price'],
                 ];
             }
         }
@@ -119,6 +130,8 @@ class Order
             '5', '6' => '0aeaadf9-4ff1-418f-98d3-d324c8d2e870',
             '7' => '0f684c6c-0040-4b2a-ba38-ee49ce53273a',
             '8' => '5a2a4388-8b99-4291-ab04-2cd20c715cf8',
+            '11' => 'Hondroflex',
+            '14', '15' => 'VitaProsta',
             default => (string) $cartId,
         };
     }
@@ -140,5 +153,12 @@ class Order
         $curl($url, $token, 'PUT', $data);
 
         echo 'Update ' . $orderData['reference'] . ' status: ' . $statusId . '<br/>';
+    }
+
+    public function delete($reference): array|false
+    {
+        $query = 'DELETE FROM orders WHERE reference = ' . $reference;
+
+        return $this->pdo->query($query)->fetchAll();
     }
 }

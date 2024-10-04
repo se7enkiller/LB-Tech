@@ -1,6 +1,6 @@
 <?php
 
-namespace Cron;
+namespace cron;
 
 use Classes\Order;
 use Classes\Wapi;
@@ -28,10 +28,16 @@ class WapiOrder
             $tracker = $this->wapi->getTrackerData($orderData);
 
             if ($tracker === false) {
+                $this->order->delete($orderData['reference']);
                 continue;
             }
+
+            $statusId = StatusType::getId($tracker['status']);
+
             $orderData['tracker_id'] = $tracker['wapiTrackingNumber'];
             $orderData['track'] = $tracker['uuid'];
+            $orderData['status_id'] = $statusId ?: 21;
+            $orderData['service'] = 'Wapi';
 
             $this->order->update($orderData);
         }
@@ -48,7 +54,8 @@ class WapiOrder
                 'status_id' => $statusId,
                 'tracker_id' => $orderData['tracker_id'],
                 'reference' => $orderData['reference'],
-                'track' => $orderData['track']
+                'track' => $orderData['track'],
+                'service' => 'Wapi'
             ]);
 
             $this->order->updateStatus($orderData, $statusId, 'Wapi');

@@ -21,23 +21,25 @@ class Wapi
         foreach ($orderData['cart']['products'] as $product) {
             $products[] = [
                 'product' => [
-                    'id' => $product['id'],
+                    'sku' => $product['id'],
                 ],
                 'quantity' => $product['quantity'],
-                'price' => $product['cost_local_currency'],
-                'total' => $orderData['cart']['total_local_currency']
+                'price' => $orderData['cart']['total_local_currency'] / $product['quantity'],
+                'total' => $orderData['cart']['total_local_currency'],
+                'cod' => $orderData['cart']['total_local_currency']
             ];
         }
 
         $data = [
             'order' => [
-              'id' => 'a2559667-ee10-4afb-b4df-08cb32efb147',
-              'number' => (string)$orderData['reference']
+                'id' => (string)$orderData['reference'],
+                'number' => (string)$orderData['reference']
             ],
             'date' => date('Y-m-d\TH:i:s'),
             'currency' => 'EUR',
             'codCurrency' => 'EUR',
             'products' => $products,
+            'comment' => $orderData['address_comment'],
             'receiver' => [
                 'fullName' => $orderData['name'],
                 'phone' => $orderData['phone'],
@@ -78,6 +80,8 @@ class Wapi
         $result = $curl($url, $this->token, 'POST', $data);
 
         if (empty($result['success'])) {
+            echo $result['errorMessage'];
+
             return false;
         }
 
